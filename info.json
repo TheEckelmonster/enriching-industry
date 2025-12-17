@@ -1,16 +1,19 @@
 {
 	"name": "enriching-industry",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"title": "Enriching Industry",
 	"author": "EleusisLaArwall",
 	"homepage": "",
 	"description": "Add-on for Crushing Industry.",
 	"factorio_version": "2.0",
 	"dependencies": [
-		"base >= 1.0",
-		"? space-age",
+		"base >= 2.0.72",
+		"? space-age >= 2.0.72",
 		"? aai-industry",
-		"crushing-industry"
+		"crushing-industry",
+        "? bzlead >= 2.0.28",
+        "? bztin >= 2.1.15",
+        "? bztitanium >= 2.0.26"
 	]
 }
 
