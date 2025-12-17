@@ -6,3 +6,5 @@ require("prototypes.recipe")
 require("prototypes.technology")
 
 require("prototypes.base-recipe-changes")
+
+require("prototypes.compat.bz")
