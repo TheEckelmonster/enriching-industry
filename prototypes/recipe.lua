@@ -12,7 +12,8 @@ local ci_ore_crushing = settings.startup["crushing-industry-ore"].value
 local ci_concrete_mix = settings.startup["crushing-industry-concrete-mix"].value
 local ci_hide_player_crafting = settings.startup["crushing-industry-hide-player-crafting"].value
 
-if ci_glass or mods["aai-industry"] then
+-- If CI-glass is false, only do for AAI if K2 is not present
+if ci_glass or (mods["aai-industry"] and not mods["Krastorio2"]) then
 	data:extend(
 	{
 		{
