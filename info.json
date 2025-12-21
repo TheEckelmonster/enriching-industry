@@ -12,8 +12,10 @@
 		"? aai-industry",
 		"crushing-industry",
         "? bzlead >= 2.0.28",
+        "? bzsilicon >= 2.0.18",
         "? bztin >= 2.1.15",
         "? bztitanium >= 2.0.26",
+        "? bzzirconium >= 2.1.13",
 		"? molten-tungsten"
 	]
 }
