@@ -1,4 +1,4 @@
-local ei_washing_extra = settings.startup["ei-washing-extra"].value * 0.01
+local ei_washing_extra = settings.startup["ei-wash-bonus-direct-ssgq"].value * 0.01
 
 -- Crushing Industry Mod Settings
 local ci_ore_crushing = settings.startup["crushing-industry-ore"].value
