@@ -69,15 +69,18 @@ if not EnrichingIndustry then
 	end
 
 	function EnrichingIndustry.make_washing_byproduct(item_name, probability, amount, allow_productivity)
-		amount = amount or 1
-		return {
-			type = "item",
-			name = item_name,
-			amount = amount,
-			probability = probability or EnrichingIndustry.STANDARD_BYPRODUCT,
-			ignored_by_stats = not allow_productivity and amount or nil,
-			ignored_by_productivity = not allow_productivity and amount or nil,
-			show_details_in_recipe_tooltip = false
-		}
+		probability = probability or EnrichingIndustry.STANDARD_BYPRODUCT
+		if probability > 0 then
+			amount = amount or 1
+			return {
+				type = "item",
+				name = item_name,
+				amount = amount,
+				probability = probability,
+				ignored_by_stats = not allow_productivity and amount or nil,
+				ignored_by_productivity = not allow_productivity and amount or nil,
+				show_details_in_recipe_tooltip = false
+			}
+		end
 	end
 end

@@ -1,16 +1,80 @@
 local util = require("__enriching-industry__.api")
 
-local ei_washing_extra = settings.startup["ei-washing-extra"].value * 0.01
-local ei_quartz_extra = settings.startup["ei-quartz-extra"].value * 0.01
-local ei_leaching_amount = settings.startup["ei-leaching-extra"].value * 0.1 + 10
-local ei_recrystall_extra = settings.startup["ei-recrystall-extra"].value * 0.01
---local ei_recrystall_byprod_extra = settings.startup["ei-recrystall-byprod-extra"].value * 0.01
+-- Enriching Industry Mod Settings
+local ei_leach_sulfuric_acid = settings.startup["ei-leach-sulfuric-acid"].value
+local ei_productivity_precursor = settings.startup["ei-productivity-precursor"].value
+-- Direct bonus
+local ei_selection_bonus_direct = settings.startup["ei-selection-bonus-direct"].value
+local ei_wash_bonus_direct_ssgq = {}
+local ei_wash_bonus_direct = {}
+local ei_leach_amount = {}
+local ei_recry_bonus_direct = {}
+-- Primary precursor bonus
+local ei_selection_bonus_primprec = settings.startup["ei-selection-bonus-primprec"].value
+local ei_wash_bonus_primprec_ssgq = {}
+local ei_wash_bonus_primprec = {}
+local ei_leach_bonus_primprec = {}
+-- Secondary precursor bonus
+local ei_selection_bonus_secoprec = settings.startup["ei-selection-bonus-secoprec"].value
+local ei_wash_bonus_secoprec_ssgq = {}
+local ei_wash_bonus_secoprec = {}
+local ei_secoprec_leaching_extra = {}
+--local ei_secoprec_productivity = settings.startup["ei-secoprec-productivity"].value
 
 -- Crushing Industry Mod Settings
 local ci_glass = settings.startup["crushing-industry-glass"].value
 local ci_ore_crushing = settings.startup["crushing-industry-ore"].value
 local ci_concrete_mix = settings.startup["crushing-industry-concrete-mix"].value
 local ci_hide_player_crafting = settings.startup["crushing-industry-hide-player-crafting"].value
+
+-- Selection or Full Control
+-- Direct bonus
+if ei_selection_bonus_direct == "custom" then
+	ei_wash_bonus_direct_ssgq = settings.startup["ei-wash-bonus-direct-ssgq"].value * 0.01
+	ei_wash_bonus_direct = settings.startup["ei-wash-bonus-direct"].value * 0.01
+	ei_leach_amount = settings.startup["ei-leach-bonus-direct"].value * 0.1 + 10
+	ei_recry_bonus_direct = settings.startup["ei-recry-bonus-direct"].value * 0.01
+	--ei_recry_byprod = settings.startup["ei-recry-byprod"].value * 0.01
+else
+	ei_selection_bonus_direct = tonumber(ei_selection_bonus_direct) * 0.01
+	ei_wash_bonus_direct_ssgq = ei_selection_bonus_direct
+	ei_wash_bonus_direct = ei_selection_bonus_direct
+	ei_leach_amount = ei_selection_bonus_direct * 10 + 10
+	ei_recry_bonus_direct = ei_selection_bonus_direct
+end
+
+-- Primary precursor bonus
+if ei_selection_bonus_primprec == "custom" then
+	ei_wash_bonus_primprec_ssgq = settings.startup["ei-wash-bonus-primprec-ssgq"].value * 0.01
+	ei_wash_bonus_primprec = settings.startup["ei-wash-bonus-primprec"].value * 0.01
+	ei_leach_bonus_primprec = settings.startup["ei-leach-bonus-primprec"].value * 0.01
+else
+	ei_selection_bonus_primprec = tonumber(ei_selection_bonus_primprec) * 0.01
+	ei_wash_bonus_primprec_ssgq = ei_selection_bonus_primprec
+	ei_wash_bonus_primprec = ei_selection_bonus_primprec
+	ei_leach_bonus_primprec = ei_selection_bonus_primprec
+end
+
+-- Secondary precursor bonus
+if ei_selection_bonus_secoprec == "custom" then
+	ei_wash_bonus_secoprec_ssgq = settings.startup["ei-wash-bonus-secoprec-ssgq"].value * 0.01
+	ei_wash_bonus_secoprec = settings.startup["ei-wash-bonus-secoprec"].value * 0.01
+else
+	ei_selection_bonus_secoprec = tonumber(ei_selection_bonus_secoprec) * 0.01
+	ei_wash_bonus_secoprec_ssgq = ei_selection_bonus_secoprec
+	ei_wash_bonus_secoprec = ei_selection_bonus_secoprec
+end
+
+-- ????????????????????????????????????????????????????????????????? TODO
+-- Missing: ei_crush_bonus_precursor_ssgq > 0.1 or ei_crush_bonus_precursor > 0.1
+-- Disable productivity if any precursor > 10%
+if ei_wash_bonus_primprec_ssgq > 0.1 or ei_wash_bonus_primprec > 0.1 or ei_leach_bonus_primprec > 0.1 or ei_wash_bonus_secoprec_ssgq > 0.1 or ei_wash_bonus_secoprec > 0.1 then
+	ei_productivity_precursor = false
+end
+-- Disable productivity if any secondary precursor > 10%
+-- if ei_wash_bonus_secoprec_ssgq > 0.1 or ei_wash_bonus_secoprec > 0.1 then
+-- 	ei_productivity_precursor = false
+-- end
 
 -- If CI-glass is false, only do for AAI if K2 is not present
 if ci_glass or (mods["aai-industry"] and not mods["Krastorio2"]) then
@@ -32,10 +96,12 @@ if ci_glass or (mods["aai-industry"] and not mods["Krastorio2"]) then
 				{type="fluid", name="water", amount=10}
 			},
 			results = {
-				{type="item", name="ei-quartz", amount=1, extra_count_fraction=ei_quartz_extra},
+				{type="item", name="ei-quartz", amount=1, extra_count_fraction=ei_wash_bonus_direct_ssgq},
 				{type="fluid", name="ei-tailing-slurry", amount=10, ignored_by_productivity=1000},
-				EnrichingIndustry.make_washing_byproduct("sand", EnrichingIndustry.STANDARD_BYPRODUCT),
-				EnrichingIndustry.make_washing_byproduct("stone", EnrichingIndustry.FLAVOR_BYPRODUCT),
+				EnrichingIndustry.make_washing_byproduct("sand", ei_wash_bonus_primprec_ssgq, 1, ei_productivity_precursor),
+--				EnrichingIndustry.make_washing_byproduct("sand", EnrichingIndustry.STANDARD_BYPRODUCT),
+				EnrichingIndustry.make_washing_byproduct("stone", ei_wash_bonus_secoprec_ssgq, 1, ei_productivity_precursor),
+--				EnrichingIndustry.make_washing_byproduct("stone", EnrichingIndustry.FLAVOR_BYPRODUCT),
 			},
 			main_product = "ei-quartz",
 			crafting_machine_tint =
@@ -90,10 +156,10 @@ if ci_ore_crushing then
 				{type="fluid", name="water", amount=10}
 			},
 			results = {
-				{type="item", name="ei-enriched-iron-ore", amount=1, extra_count_fraction=ei_washing_extra},
+				{type="item", name="ei-enriched-iron-ore", amount=1, extra_count_fraction=ei_wash_bonus_direct},
 				{type="fluid", name="ei-tailing-slurry", amount=10, ignored_by_productivity=1000},
-				EnrichingIndustry.make_washing_byproduct("crushed-iron-ore", EnrichingIndustry.STANDARD_BYPRODUCT),
-				EnrichingIndustry.make_washing_byproduct("iron-ore", EnrichingIndustry.FLAVOR_BYPRODUCT),
+				EnrichingIndustry.make_washing_byproduct("crushed-iron-ore", ei_wash_bonus_primprec, 1, ei_productivity_precursor),
+				EnrichingIndustry.make_washing_byproduct("iron-ore", ei_wash_bonus_secoprec, 1, ei_productivity_precursor),
 			},
 			main_product = "ei-enriched-iron-ore",
 			crafting_machine_tint =
@@ -127,10 +193,10 @@ if ci_ore_crushing then
 				{type="fluid", name="water", amount=10}
 			},
 			results = {
-				{type="item", name="ei-enriched-copper-ore", amount=1, extra_count_fraction=ei_washing_extra},
+				{type="item", name="ei-enriched-copper-ore", amount=1, extra_count_fraction=ei_wash_bonus_direct},
 				{type="fluid", name="ei-tailing-slurry", amount=10, ignored_by_productivity=1000},
-				EnrichingIndustry.make_washing_byproduct("crushed-copper-ore", EnrichingIndustry.STANDARD_BYPRODUCT),
-				EnrichingIndustry.make_washing_byproduct("copper-ore", EnrichingIndustry.FLAVOR_BYPRODUCT),
+				EnrichingIndustry.make_washing_byproduct("crushed-copper-ore", ei_wash_bonus_primprec, 1, ei_productivity_precursor),
+				EnrichingIndustry.make_washing_byproduct("copper-ore", ei_wash_bonus_secoprec, 1, ei_productivity_precursor),
 			},
 			main_product = "ei-enriched-copper-ore",
 			crafting_machine_tint =
@@ -160,10 +226,11 @@ if ci_ore_crushing then
 			ingredients = {
 				{type="item", name="crushed-iron-ore", amount=1},
 				{type="fluid", name="water", amount=10},
-				{type="fluid", name="sulfuric-acid", amount=5}
+				{type="fluid", name="sulfuric-acid", amount=ei_leach_sulfuric_acid}
 			},
 			results = {
-				{type="fluid", name="ei-sulfuric-iron-solution", amount=ei_leaching_amount},
+				{type="fluid", name="ei-sulfuric-iron-solution", amount=ei_leach_amount},
+				EnrichingIndustry.make_washing_byproduct("crushed-iron-ore", ei_leach_bonus_primprec, 1, ei_productivity_precursor),
 	--			EnrichingIndustry.make_washing_byproduct("sand", EnrichingIndustry.COMMON_BYPRODUCT),
 	--			EnrichingIndustry.make_washing_byproduct("stone"),
 			},
@@ -193,10 +260,11 @@ if ci_ore_crushing then
 			ingredients = {
 				{type="item", name="crushed-copper-ore", amount=1},
 				{type="fluid", name="water", amount=10},
-				{type="fluid", name="sulfuric-acid", amount=5}
+				{type="fluid", name="sulfuric-acid", amount=ei_leach_sulfuric_acid}
 			},
 			results = {
-				{type="fluid", name="ei-sulfuric-copper-solution", amount=ei_leaching_amount},
+				{type="fluid", name="ei-sulfuric-copper-solution", amount=ei_leach_amount},
+				EnrichingIndustry.make_washing_byproduct("crushed-copper-ore", ei_leach_bonus_primprec, 1, ei_productivity_precursor),
 	--			EnrichingIndustry.make_washing_byproduct("sand", EnrichingIndustry.COMMON_BYPRODUCT),
 	--			EnrichingIndustry.make_washing_byproduct("stone"),
 			},
@@ -225,8 +293,8 @@ if ci_ore_crushing then
 				{type="fluid", name="ei-sulfuric-iron-solution", amount=10}
 			},
 			results = {
-				{type="item", name="ei-enriched-iron-ore", amount=1, extra_count_fraction=ei_recrystall_extra},
---				{type="item", name="ei-enriched-copper-ore", amount=0, extra_count_fraction=ei_recrystall_byprod_extra},
+				{type="item", name="ei-enriched-iron-ore", amount=1, extra_count_fraction=ei_recry_bonus_direct},
+--				{type="item", name="ei-enriched-copper-ore", amount=0, extra_count_fraction=ei_recry_byprod},
 --				{type="item", name="sulfur", amount=1, extra_count_fraction=0.5},
 				{type="fluid", name="water", amount=5, ignored_by_productivity=100},
 --				EnrichingIndustry.make_washing_byproduct("sulfur", EnrichingIndustry.FREQUENT_BYPRODUCT)
@@ -256,8 +324,8 @@ if ci_ore_crushing then
 				{type="fluid", name="ei-sulfuric-copper-solution", amount=10}
 			},
 			results = {
-				{type="item", name="ei-enriched-copper-ore", amount=1, extra_count_fraction=ei_recrystall_extra},
---				{type="item", name="ei-enriched-iron-ore", amount=0, extra_count_fraction=ei_recrystall_byprod_extra},
+				{type="item", name="ei-enriched-copper-ore", amount=1, extra_count_fraction=ei_recry_bonus_direct},
+--				{type="item", name="ei-enriched-iron-ore", amount=0, extra_count_fraction=ei_recry_byprod},
 --				{type="item", name="sulfur", amount=1, extra_count_fraction=0.5},
 				{type="fluid", name="water", amount=5, ignored_by_productivity=1000},
 --				EnrichingIndustry.make_washing_byproduct("sulfur", EnrichingIndustry.FREQUENT_BYPRODUCT)
@@ -463,8 +531,8 @@ if mods["space-age"] then
 				results = {
 					{type="item", name="ei-enriched-tungsten-ore", amount=1, extra_count_fraction=ei_tungsten_extra},
 					{type="fluid", name="ei-tailing-slurry", amount=10, ignored_by_productivity=1000},
-					EnrichingIndustry.make_washing_byproduct("crushed-tungsten-ore"),
-					EnrichingIndustry.make_washing_byproduct("tungsten-ore", EnrichingIndustry.FLAVOR_BYPRODUCT),
+					EnrichingIndustry.make_washing_byproduct("crushed-tungsten-ore", ei_wash_bonus_primprec, 1, ei_productivity_precursor),
+					EnrichingIndustry.make_washing_byproduct("tungsten-ore", ei_wash_bonus_secoprec, 1, ei_productivity_precursor),
 				},
 				main_product = "ei-enriched-tungsten-ore",
 				crafting_machine_tint =
@@ -516,8 +584,8 @@ if mods["space-age"] then
 				},
 				results = {
 					{type="item", name="ei-enriched-holmium", amount=1, extra_count_fraction=ei_holmium_extra},
-					EnrichingIndustry.make_washing_byproduct("holmium-powder"),
-					EnrichingIndustry.make_washing_byproduct("holmium-ore", EnrichingIndustry.FLAVOR_BYPRODUCT),
+					EnrichingIndustry.make_washing_byproduct("holmium-powder", ei_wash_bonus_primprec, 1, ei_productivity_precursor),
+					EnrichingIndustry.make_washing_byproduct("holmium-ore", ei_wash_bonus_secoprec, 1, ei_productivity_precursor),
 				},
 				main_product = "ei-enriched-holmium",
 				crafting_machine_tint =
