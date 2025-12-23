@@ -15,6 +15,7 @@ if (mods and mods["bzlead"]) then
 end
 
 if (mods and mods["bzsilicon"]) then
+    ftech.add_unlock("ore-enriching", "ei-silica-from-quartz")
 end
 
 if (mods and mods["bztin"]) then
