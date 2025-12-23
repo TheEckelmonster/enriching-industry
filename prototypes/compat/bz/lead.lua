@@ -38,7 +38,7 @@ data:extend({
             { size = 64, filename = "__enriching-industry__/graphics/icons/enriched-lead-ore-3.png", scale = 0.5, mipmap_count = 1 },
         },
         subgroup = "raw-resource",
-        order = "g-d[lead-ore]-d[enriched]",
+        order = "g[lead-ore]-d[enriched]",
         hidden = not ci_ore_crushing,
         stack_size = 100,
         weight = 2 * kg,
