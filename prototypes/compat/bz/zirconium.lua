@@ -76,6 +76,13 @@ if (ci_ore_crushing) then
                 { type = "fluid", name = "water", amount_min = 5, amount_max = 15, ignored_by_productivity = 1000 },
                 { type = "fluid", name = "ei-tailing-slurry", amount_min = 1, amount_max = 5, ignored_by_productivity = 1000 },
             },
+            crafting_machine_tint =
+            {
+                primary = { r = 129, g = 73, b = 80, a = 1, }, -- #814950
+                secondary = { r = 98, g = 52, b = 53, a = 1, }, -- #623435
+                tertiary = { r = 134, g = 115, b = 122, a = 1, }, -- #86737a
+                quaternary = { r = 98, g = 52, b = 53, a = 1, }, -- #623435
+            }
         },
         {
             type = "recipe",

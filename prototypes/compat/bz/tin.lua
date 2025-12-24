@@ -53,6 +53,14 @@ if (ci_ore_crushing) then
         if (mods["alloy-smelting"]) then space_age = true end
     end
 
+    local crafting_machine_tint =
+    {
+        primary = { r = 194, g = 163, b = 120, a = 1, }, -- #c2a378
+        secondary = { r = 163, g = 160, b = 126, a = 1, }, -- #4a3a07e
+        tertiary = { r = 206, g = 197, b = 115, a = 1, }, -- #cec573
+        quaternary = { r = 163, g = 160, b = 126, a = 1, }, -- #4a3a07e
+    }
+
     data:extend({
         {
             type = "recipe",
@@ -82,6 +90,7 @@ if (ci_ore_crushing) then
                 { type = "fluid", name = "water", amount = 5, ignored_by_productivity = 1000, },
                 { type = "fluid", name = "ei-tailing-slurry", amount_min = 1, amount_max = 5, probability = 0.15, ignored_by_productivity = 1000, }
             },
+            crafting_machine_tint = crafting_machine_tint,
         },
         {
             type = "recipe",
@@ -113,6 +122,7 @@ if (ci_ore_crushing) then
                 { type = "fluid", name = "water", amount_min = 1, amount_max = 5, probability = 0.5, },
                 { type = "fluid", name = "ei-tailing-slurry", amount_min = 1, amount_max = 5, probability = 0.35, ignored_by_productivity = 1000, }
             },
+            crafting_machine_tint = crafting_machine_tint,
         },
         -- MATERIAL
         {

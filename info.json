@@ -7,7 +7,7 @@
 	"description": "Adds further ore enrichment to Crushing Industry for even more yield at the cost of increased complexity. Some might call it win-win.",
 	"factorio_version": "2.0",
 	"dependencies": [
-		"base",
+		"base >= 1.0",
 		"? space-age",
 		"? aai-industry",
 		"crushing-industry",
