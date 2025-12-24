@@ -47,7 +47,7 @@ data:extend({
     },
     {
         type = "item",
-        name = "ei-reduced-ilmenite",
+        name = "ei-ilmenite",
         icon = "__enriching-industry__/graphics/icons/enriched-titanium-ore.png",
         icon_size = 64,
         pictures =
@@ -204,10 +204,10 @@ if (ci_ore_crushing) then
             },
             results =
             {
-                { type = "item",  name = "ei-reduced-ilmenite", amount = 1, extra_count_fraction = ei_washing_extra },
+                { type = "item",  name = "ei-ilmenite", amount = 1, extra_count_fraction = ei_washing_extra },
                 type(mods) == "table" and mods["space-age"] and { type = "item", name = "carbon", amount = 1, probability = 0.05, ignored_by_productivity = 1000, } or nil,
             },
-            main_product = "ei-reduced-ilmenite",
+            main_product = "ei-ilmenite",
             crafting_machine_tint = crafting_machine_tint,
         },
         {
@@ -227,8 +227,8 @@ if (ci_ore_crushing) then
             energy_required = 8,
             ingredients =
             {
-                { type = "item",  name = "ei-reduced-ilmenite", amount = 1 },
-                { type = "fluid", name = "sulfuric-acid",       amount = 15 },
+                { type = "item",  name = "ei-ilmenite", amount = 1 },
+                { type = "fluid", name = "sulfuric-acid", amount = 15 },
             },
             results =
             {
@@ -268,7 +268,7 @@ if (ci_ore_crushing) then
             allow_productivity = true,
             auto_recycle = false,
             hide_from_player_crafting = ci_hide_player_crafting == true,
-            energy_required = 8,
+            energy_required = 2,
             ingredients =
             {
                 { type = "item", name = "ei-enriched-titanium-ore", amount = 4, },

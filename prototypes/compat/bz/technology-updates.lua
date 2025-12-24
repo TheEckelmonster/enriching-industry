@@ -15,7 +15,9 @@ if (mods and mods["bzlead"]) then
 end
 
 if (mods and mods["bzsilicon"]) then
-    ftech.add_unlock("ore-enriching", "ei-silica-from-quartz")
+    if ci_ore_crushing then
+        ftech.add_unlock("ore-enriching", "ei-silica-from-quartz")
+    end
 end
 
 if (mods and mods["bztin"]) then
@@ -40,5 +42,12 @@ if (mods and mods["bztitanium"]) then
 end
 
 if (mods and mods["bzzirconium"]) then
+    if ci_ore_crushing then
+        ftech.add_unlock("ore-enriching", "ei-purified-zircon-ore")
+        ftech.add_unlock("ore-enriching", "ei-purified-zircon-smelting")
+
+        ftech.add_unlock("ore-enriching-2", "ei-enriched-zircon-ore")
+        ftech.add_unlock("ore-enriching-2", "ei-enriched-zircon-smelting")
+    end
 end
 
