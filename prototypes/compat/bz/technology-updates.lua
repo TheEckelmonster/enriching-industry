@@ -4,27 +4,28 @@ local ftech = require("__fdsl__.lib.technology")
 -- Crushing Industry Mod Settings
 local ci_ore_crushing = settings.startup["crushing-industry-ore"].value
 
-if (mods and mods["bzlead"]) then
-    if ci_ore_crushing then
+if (type(mods) == "table" and ci_ore_crushing) then
+    if (mods["bzlead"]) then
         ftech.add_unlock("ore-enriching", "ei-enriched-lead-ore")
         ftech.add_unlock("ore-enriching", "ei-enriched-lead-smelting")
         ftech.add_unlock("ore-enriching", "ei-tailing-slurry-filtering-lead")
 
         ftech.add_unlock("ore-enriching-2", "ei-tailing-slurry-reprocessing-lead")
     end
-end
 
-if (mods and mods["bzsilicon"]) then
-    if ci_ore_crushing then
+    if (mods["bzsilicon"]) then
         ftech.add_unlock("ore-enriching", "ei-silica-from-quartz")
     end
-end
 
-if (mods and mods["bztin"]) then
-end
+    if (mods["bztin"]) then
+        ftech.add_unlock("ore-enriching", "ei-purified-tin-ore")
+        ftech.add_unlock("ore-enriching", "ei-purified-tin-ore-smelting")
 
-if (mods and mods["bztitanium"]) then
-    if ci_ore_crushing then
+        ftech.add_unlock("ore-enriching-2", "ei-enriched-tin-ore")
+        ftech.add_unlock("ore-enriching-2", "ei-enriched-tin-ore-smelting")
+    end
+
+    if (mods["bztitanium"]) then
         ftech.add_unlock("ore-enriching", "ei-enriched-titanium-ore")
         ftech.add_unlock("ore-enriching", "ei-enriched-titanium-ore-sulfate")
         ftech.add_unlock("ore-enriching", "ei-enriched-titanium-smelting")
@@ -39,10 +40,8 @@ if (mods and mods["bztitanium"]) then
             ftech.add_unlock("foundry", "ei-enriched-titanium-smelting-metallurgy")
         end
     end
-end
 
-if (mods and mods["bzzirconium"]) then
-    if ci_ore_crushing then
+    if (mods["bzzirconium"]) then
         ftech.add_unlock("ore-enriching", "ei-purified-zircon-ore")
         ftech.add_unlock("ore-enriching", "ei-purified-zircon-smelting")
 
@@ -50,4 +49,3 @@ if (mods and mods["bzzirconium"]) then
         ftech.add_unlock("ore-enriching-2", "ei-enriched-zircon-smelting")
     end
 end
-

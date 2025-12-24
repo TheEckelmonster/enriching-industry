@@ -38,7 +38,7 @@ data:extend({
             { size = 64, filename = "__enriching-industry__/graphics/icons/enriched-lead-ore-3.png", scale = 0.5, mipmap_count = 1 },
         },
         subgroup = "raw-resource",
-        order = "g[lead-ore]-d[enriched]",
+        order = "t-c-a[lead-ore]-d[enriched]",
         hidden = not ci_ore_crushing,
         stack_size = 100,
         weight = 2 * kg,
@@ -76,7 +76,8 @@ if (ci_ore_crushing) then
             icons = EnrichingIndustry.make_washing_icons("crushed-lead-ore"),
             localised_name = { "recipe-name.ei-enriched-lead-ore" },
             category = type(mods) == "table" and mods["space-age"] and "chemistry-or-cryogenics" or "chemistry",
-            order = "f[lead-ore]-d[enriched]",
+            subgroup = "raw-resource",
+            order = "t-c-a[lead-ore]-a[chemistry]-d[enriched]-c[stage-1]",
             enabled = false,
             allow_productivity = true,
             auto_recycle = false,
@@ -89,11 +90,10 @@ if (ci_ore_crushing) then
             results =
             {
                 { type = "item",  name = "ei-enriched-lead-ore",   amount = 1,  extra_count_fraction = ei_washing_extra },
-                { type = "fluid", name = "ei-tailing-slurry-lead", amount = 10, ignored_by_productivity = 1000 },
+                { type = "fluid", name = "ei-tailing-slurry-lead", amount_min = 5, amount_max = 10, ignored_by_productivity = 1000 },
                 EnrichingIndustry.make_washing_byproduct("crushed-lead-ore", EnrichingIndustry.STANDARD_BYPRODUCT),
                 EnrichingIndustry.make_washing_byproduct("lead-ore", EnrichingIndustry.FLAVOR_BYPRODUCT),
             },
-            main_product = "ei-enriched-lead-ore",
             crafting_machine_tint = crafting_machine_tint,
         },
         -- MATERIAL
@@ -102,7 +102,8 @@ if (ci_ore_crushing) then
             name = "ei-enriched-lead-smelting",
             icons = EnrichingIndustry.make_smelting_icons("ei-enriched-lead-ore", "lead-plate"),
             category = type(mods) == "table" and mods["alloy-smelting"] and "kiln-smelting" or "smelting",
-            order = "a[smelting]-b[lead-plate]-d[enriched]",
+            subgroup = "raw-material",
+            order = "d[lead-plate]-c[crushing]-a[smelting]-d[enriched]",
             enabled = false,
             allow_productivity = true,
             auto_recycle = false,
@@ -113,7 +114,6 @@ if (ci_ore_crushing) then
             {
                 { type = "item", name = "lead-plate", amount = 1 * multiplier },
             },
-            main_product = "lead-plate",
         },
         {
             type = "recipe",
@@ -132,13 +132,13 @@ if (ci_ore_crushing) then
             },
             results =
             {
-                { type = "fluid", name = "ei-tailing-slurry",    amount = 10, },
+                { type = "fluid", name = "ei-tailing-slurry",    amount_min = 1, amount_max = 5, },
                 { type = "fluid", name = "water",                amount = 90, ignored_by_productivity = 1000, },
-                { type = "item",  name = "ei-enriched-lead-ore", amount_min = 0, amount_max = 2, probability = 0.02, },
-                { type = "item",  name = "crushed-lead-ore",     amount_min = 0, amount_max = 2, probability = 0.05, },
-                { type = "item",  name = "lead-ore",             amount_min = 0, amount_max = 1, probability = 0.125, },
+                { type = "item", name = "stone", amount_min = 0, amount_max = 2, probability = 0.35 },
+                { type = "item", name = "ei-enriched-lead-ore", amount_min = 0, amount_max = 2, probability = 0.02, },
+                { type = "item", name = "crushed-lead-ore",     amount_min = 0, amount_max = 2, probability = 0.05, },
+                { type = "item", name = "lead-ore",             amount_min = 0, amount_max = 1, probability = 0.125, },
             },
-            main_product = "ei-tailing-slurry",
             crafting_machine_tint = crafting_machine_tint,
         },
         {
@@ -187,7 +187,6 @@ if (ci_ore_crushing) then
                 { type = "item",  name = "crushed-lead-ore",        amount_min = 0, amount_max = 2, probability = 0.125, },
                 { type = "fluid", name = "ei-tailing-slurry-lead",  amount_min = 1, amount_max = 12.5, },
             },
-            main_product = "ei-tailing-slurry",
             crafting_machine_tint = crafting_machine_tint,
         },
     })
